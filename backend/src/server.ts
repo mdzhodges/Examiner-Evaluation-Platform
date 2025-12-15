@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import path from "path";
 import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
+import mongoose from "mongoose";
+
+import examinerRouter from './routes/examiner.js';
 
 
 // import { examinerRouter } from "./routes/examiner.js";
@@ -26,7 +29,13 @@ if (!MONGO_URI) {
 export const mongoClient = new MongoClient(MONGO_URI);
 
 async function connectMongo() {
-    await mongoClient.connect();
+    try{
+        if (MONGO_URI){
+            await mongoose.connect(MONGO_URI);
+        }
+    }catch(error){
+        console.log(error)
+    }
     console.log(`MongoDB connected to ${MONGO_URI}`);
 }
 
@@ -36,7 +45,7 @@ const app = express();
 app.use(express.json());
 
 // routers
-// app.use("/examiner", examinerRouter);
+app.use("/examiner", examinerRouter);
 
 
 //start up
