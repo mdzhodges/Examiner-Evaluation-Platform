@@ -1,0 +1,20 @@
+{
+  "name": "examiner-evaluation-platform",
+  "version": "1.0.0",
+  "description": "Package Dependencies",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "run": "npm run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdzhodges/Examiner-Evaluation-Platform.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mdzhodges/Examiner-Evaluation-Platform/issues"
+  },
+  "homepage": "https://github.com/mdzhodges/Examiner-Evaluation-Platform#readme"
+}
