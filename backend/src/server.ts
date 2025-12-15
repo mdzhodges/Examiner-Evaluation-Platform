@@ -27,7 +27,7 @@ export const mongoClient = new MongoClient(MONGO_URI);
 
 async function connectMongo() {
     await mongoClient.connect();
-    console.log("MongoDB connected");
+    console.log(`MongoDB connected to ${MONGO_URI}`);
 }
 
 // create the app
