@@ -4,6 +4,7 @@ import path from "path";
 import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
 import mongoose from "mongoose";
+import cors from "cors";
 
 import examinerRouter from './routes/examiner.js';
 
@@ -41,7 +42,11 @@ async function connectMongo() {
 
 // create the app
 const app = express();
-
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true
+}));
 app.use(express.json());
 
 // routers
