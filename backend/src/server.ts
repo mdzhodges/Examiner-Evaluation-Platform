@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
+import fs from "fs";
 import path from "path";
-import { MongoClient } from "mongodb";
 import { fileURLToPath } from "url";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -12,28 +12,46 @@ import examinerRouter from "./routes/examiner.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/**
- * Only load .env locally
- * Cloud Run injects env vars directly
- */
-if (process.env.NODE_ENV !== "production") {
+// Load `.env` for local development; Cloud Run injects env vars at runtime.
+// Note: when running compiled JS (`dist/src/server.js`), `__dirname` is deeper than in TS.
+const envCandidates = [
+    path.resolve(__dirname, "../../../.env"), // backend/src -> repo root; backend/dist/src -> repo root
+    path.resolve(__dirname, "../../.env"),
+    path.resolve(process.cwd(), ".env"),
+    path.resolve(process.cwd(), "../.env")
+];
+
+const existingEnvPath = envCandidates.find((candidate) => fs.existsSync(candidate));
+if (existingEnvPath) {
+    dotenv.config({ path: existingEnvPath });
+} else {
     dotenv.config();
 }
 
 // Environment setup
 const ENVIRONMENT = process.env.ENVIRONMENT ?? "local";
 const PORT = Number(process.env.PORT) || 8080;
-const MONGO_URI = process.env.MONGO_URI;
 const CORS_ORIGINS = process.env.CORS_ORIGINS;
 
-if (!MONGO_URI) {
-    throw new Error("MONGO_URI is not defined");
+function resolveMongoUri(): string | undefined {
+    const env = (process.env.ENVIRONMENT || "local").toLowerCase();
+    if (env == "production") {
+        return process.env.MONGO_URI_PROD ?? process.env.MONGO_URI_PRODUCTION;
+    }
+    return process.env.MONGO_URI;
 }
 
-// Mongo connection (do NOT block server startup)
+const MONGO_URI = resolveMongoUri();
+
+if (!MONGO_URI) {
+    throw new Error(
+        "Mongo connection string missing. Set MONGO_URI (recommended), or set ENVIRONMENT plus MONGO_URI_LOCAL/MONGO_URI_PROD."
+    );
+}
+
 async function connectMongo() {
     if (!MONGO_URI) {
-        throw new Error("MONGO_URI is not defined");
+        throw new Error("Mongo connection string missing (MONGO_URI).");
     }
     try {
         await mongoose.connect(MONGO_URI);

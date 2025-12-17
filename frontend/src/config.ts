@@ -1,22 +1,17 @@
-type AppConfig = {
-    API_BASE_URL?: string;
-};
 
-const runtimeConfig = (typeof window !== "undefined"
-    ? ((window as any).__APP_CONFIG__ as AppConfig | undefined)
-    : undefined) ?? {};
+const ENV = process.env.REACT_APP_ENVIRONMENT || 'development';
 
-const rawBaseUrl =
-    runtimeConfig.API_BASE_URL ??
-    process.env.REACT_APP_API_BASE_URL ??
-    "";
+export const IS_PRODUCTION = ENV === 'production';
 
-export const API_BASE_URL = String(rawBaseUrl).replace(/\/$/, "");
 
+export const API_BASE_URL = IS_PRODUCTION
+    ? "https://examiner-backend-622096286608.us-east1.run.app"
+    : "http://localhost:3000";
+
+
+console.log(API_BASE_URL)
 export function apiUrl(path: string): string {
     const cleanedPath = String(path).replace(/^\/+/, "");
-    if (!API_BASE_URL) {
-        return cleanedPath;
-    }
+    console.log(API_BASE_URL)
     return `${API_BASE_URL}/${cleanedPath}`;
 }

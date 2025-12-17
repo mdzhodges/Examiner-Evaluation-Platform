@@ -33,7 +33,7 @@ const LoginPage = ({ examinerId, onLoginSuccess }: LoginPageProps) => {
         try {
             const params = new URLSearchParams({ username: trimmedName });
             const url = `${apiUrl("/examiner/login")}?${params.toString()}`;
-
+            console.log(url)
             const response = await fetch(url, {
                 method: "GET"
             });
