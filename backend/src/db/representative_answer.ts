@@ -7,7 +7,7 @@ export interface RepresentativeAnswer {
     representative_answer_text: string;
     cluster_frequency: number;
     model_contributions: {
-        model_count: number;
+        model_count: string;
         run_count: number;
     };
 
@@ -46,7 +46,7 @@ const RepresentativeAnswerSchema = new Schema<RepresentativeAnswer>(
         // NEVER exposed to examiners
         model_contributions: {
             model_count: {
-                type: Number,
+                type: String,
                 required: true
             },
             run_count: {

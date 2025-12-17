@@ -112,6 +112,9 @@ router.get("/nextQuestion", async (req: Request, res: Response) => {
         const next = questionSet.find((q) => !answeredIds.includes(q._id.toString()));
 
         if (!next) {
+
+            await Examiner.findByIdAndUpdate({submission_time: new Date().toISOString})
+
             return res.status(200).json({
                 done: true,
                 message: "All questions reviewed for this round.",
