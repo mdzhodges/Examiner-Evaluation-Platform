@@ -24,7 +24,7 @@ router.get("/login", async (req: Request, res: Response) => {
         const now = timestamp ? new Date(timestamp as string) : new Date();
 
         if (!isBetween8And12EST(now)) {
-            return res.status(403).json({ message: "Login not allowed at this time" });
+            // return res.status(403).json({ message: "Login not allowed at this time" });
         }
 
         const normalizedName = String(username).trim();
@@ -113,7 +113,7 @@ router.get("/nextQuestion", async (req: Request, res: Response) => {
 
         if (!next) {
 
-            await Examiner.findByIdAndUpdate({submission_time: new Date().toISOString})
+            await Examiner.findByIdAndUpdate(examiner_id, {submission_time: new Date()})
 
             return res.status(200).json({
                 done: true,

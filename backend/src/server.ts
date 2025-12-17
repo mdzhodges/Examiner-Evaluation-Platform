@@ -67,7 +67,7 @@ const app = express();
 // ----- CORS CONFIG -----
 const defaultAllowedOrigins = new Set([
     "http://localhost:3000",
-    "http://localhost:5173",
+    "http://localhost:5000",
     "https://mdzhodges.github.io"
 ]);
 
