@@ -7,7 +7,6 @@
 
 body {
     min-height: 100vh;
-    background: radial-gradient(circle at 20% 20%, #f4f7ff, #e9eefb 40%, #dce3f5 70%, #d4ddf2);
     color: #0f172a;
 }
 
@@ -43,7 +42,7 @@ body {
 .app-badge {
     padding: 10px 12px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #0f172a, #1d4ed8);
+    background: linear-gradient(135deg, #7f1d1d, #b91c1c);
     color: #fff;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -83,9 +82,9 @@ body {
 }
 
 .pill-quiet {
-    background: #eef2ff;
-    color: #4338ca;
-    border-color: #c7d2fe;
+    background: #fef2f2;
+    color: #991b1b;
+    border-color: #fecdd3;
 }
 
 .pill-live {
@@ -152,9 +151,9 @@ body {
 
 .input:focus {
     outline: none;
-    border-color: #4f46e5;
+    border-color: #b91c1c;
     background: #fff;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.18);
 }
 
 .hint {
@@ -167,7 +166,7 @@ body {
     padding: 12px 14px;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    background: linear-gradient(135deg, #b91c1c, #7f1d1d);
     color: #fff;
     font-weight: 600;
     cursor: pointer;
@@ -176,7 +175,7 @@ body {
 
 .submit-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 14px 30px rgba(79, 70, 229, 0.35);
+    box-shadow: 0 14px 30px rgba(185, 28, 28, 0.35);
 }
 
 .submit-btn:disabled {
@@ -207,9 +206,9 @@ body {
 }
 
 .status.info-block {
-    background: #eef2ff;
-    color: #312e81;
-    border: 1px solid #c7d2fe;
+    background: #fff1f2;
+    color: #7f1d1d;
+    border: 1px solid #fecdd3;
 }
 
 .questions-card {
@@ -227,7 +226,7 @@ body {
     padding: 14px 16px;
     border: 1px solid #e2e8f0;
     border-radius: 14px;
-    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    background: linear-gradient(135deg, #ffffff, #fff7f7);
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
 }
 
@@ -270,28 +269,28 @@ body {
 
 .grade-chip {
     border: 1px solid #e2e8f0;
-    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    background: linear-gradient(135deg, #ffffff, #fff7f7);
     color: #0f172a;
     border-radius: 12px;
     padding: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.12s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 10px 30px rgba(127, 29, 29, 0.08);
     text-align: center;
 }
 
 .grade-chip:hover {
     transform: translateY(-1px);
     border-color: #cbd5e1;
-    box-shadow: 0 14px 34px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 14px 34px rgba(185, 28, 28, 0.22);
 }
 
 .grade-chip.selected {
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    background: linear-gradient(135deg, #b91c1c, #7f1d1d);
     color: #ffffff;
-    border-color: #4f46e5;
-    box-shadow: 0 16px 36px rgba(79, 70, 229, 0.35);
+    border-color: #991b1b;
+    box-shadow: 0 16px 36px rgba(185, 28, 28, 0.38);
 }
 
 .grade-chip:active {

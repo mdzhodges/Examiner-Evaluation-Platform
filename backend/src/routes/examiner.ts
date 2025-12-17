@@ -24,7 +24,7 @@ router.get("/login", async (req: Request, res: Response) => {
         const now = timestamp ? new Date(timestamp as string) : new Date();
 
         if (!isBetween8And12EST(now)) {
-            // return res.status(403).json({ message: "Login not allowed at this time" });
+            return res.status(403).json({ message: "Login not allowed at this time" });
         }
 
         const normalizedName = String(username).trim();
