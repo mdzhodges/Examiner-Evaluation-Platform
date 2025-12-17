@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "./config";
+import { apiUrl } from "./config";
 import Login from "./components/login";
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -28,11 +28,11 @@ const LoginPage = ({ examinerId, onLoginSuccess }: LoginPageProps) => {
         }
 
         setStatus("loading");
-        setMessage("");
+            setMessage("");
 
         try {
             const params = new URLSearchParams({ username: trimmedName });
-            const url = `${API_BASE_URL}/examiner/login?${params.toString()}`;
+            const url = `${apiUrl("/examiner/login")}?${params.toString()}`;
 
             const response = await fetch(url, {
                 method: "GET"

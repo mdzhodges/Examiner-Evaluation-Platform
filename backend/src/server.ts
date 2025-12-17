@@ -6,65 +6,92 @@ import { fileURLToPath } from "url";
 import mongoose from "mongoose";
 import cors from "cors";
 
-import examinerRouter from './routes/examiner.js';
+import examinerRouter from "./routes/examiner.js";
 
-
-// import { examinerRouter } from "./routes/examiner.js";
+// Resolve dirname (ESM-safe)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({
-    path: path.resolve(__dirname, "../../.env")
-});
+/**
+ * Only load .env locally
+ * Cloud Run injects env vars directly
+ */
+if (process.env.NODE_ENV !== "production") {
+    dotenv.config();
+}
 
-// environment set up
+// Environment setup
 const ENVIRONMENT = process.env.ENVIRONMENT ?? "local";
-const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
+const PORT = Number(process.env.PORT) || 8080;
 const MONGO_URI = process.env.MONGO_URI;
+const CORS_ORIGINS = process.env.CORS_ORIGINS;
 
 if (!MONGO_URI) {
     throw new Error("MONGO_URI is not defined");
 }
 
-// mongo connection
-export const mongoClient = new MongoClient(MONGO_URI);
-
+// Mongo connection (do NOT block server startup)
 async function connectMongo() {
-    try{
-        if (MONGO_URI){
-            await mongoose.connect(MONGO_URI);
-        }
-    }catch(error){
-        console.log(error)
+    if (!MONGO_URI) {
+        throw new Error("MONGO_URI is not defined");
     }
-    console.log(`MongoDB connected to ${MONGO_URI}`);
+    try {
+        await mongoose.connect(MONGO_URI);
+        console.log("MongoDB connected");
+    } catch (error) {
+        console.error("MongoDB connection error:", error);
+    }
 }
 
-// create the app
+// Express app
 const app = express();
-app.use(cors({
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-    credentials: true
-}));
+
+// ----- CORS CONFIG -----
+const defaultAllowedOrigins = new Set([
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://mdzhodges.github.io"
+]);
+
+const allowedOrigins = new Set(
+    (CORS_ORIGINS ? CORS_ORIGINS.split(",") : [])
+        .map(origin => origin.trim())
+        .filter(Boolean)
+);
+
+if (allowedOrigins.size === 0) {
+    for (const origin of defaultAllowedOrigins) {
+        allowedOrigins.add(origin);
+    }
+}
+
+app.use(
+    cors({
+        origin: (origin, callback) => {
+            if (!origin) {
+                return callback(null, true);
+            }
+
+            if (allowedOrigins.has(origin)) {
+                return callback(null, true);
+            }
+
+            return callback(new Error(`CORS blocked for origin: ${origin}`));
+        },
+        methods: ["GET", "POST", "OPTIONS"],
+        credentials: true
+    })
+);
+
 app.use(express.json());
 
-// routers
+// Routes
 app.use("/examiner", examinerRouter);
 
+// ----- START SERVER FIRST (Cloud Run requirement) -----
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT} (${ENVIRONMENT})`);
 
-//start up
-async function start() {
-    await connectMongo();
-
-    app.listen(PORT, () => {
-        console.log(
-            `Server running on port ${PORT} (${ENVIRONMENT})`
-        );
-    });
-}
-
-start().catch((err) => {
-    console.error("Startup failure:", err);
-    process.exit(1);
+    // Connect to Mongo AFTER server is listening
+    connectMongo();
 });

@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import AppHeader from "./components/header";
 import LoginPage from "./LoginPage";
 import QuestionsPage from "./QuestionsPage";
 import ProtectedRoute from "./ProtectedRoute";
+import { HashRouter } from "react-router-dom";
+
 
 type LoginSuccess = {
     examinerId: string;
@@ -23,7 +25,7 @@ const App = () => {
     };
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <AppHeader />
             <div className="page">
                 <Routes>
@@ -51,7 +53,7 @@ const App = () => {
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </div>
-        </BrowserRouter>
+        </HashRouter>
     );
 };
 

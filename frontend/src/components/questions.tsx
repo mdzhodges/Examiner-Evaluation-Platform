@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { API_BASE_URL } from "../config";
+import { apiUrl } from "../config";
 
 type FetchStatus = "idle" | "loading" | "success" | "error";
 
@@ -39,8 +39,8 @@ const Questions = ({ username, examinerId, round }: QuestionsProps) => {
             setError("");
             try {
                 const [gradesRes, questionRes] = await Promise.allSettled([
-                    fetch(`${API_BASE_URL}/examiner/grades`),
-                    fetch(`${API_BASE_URL}/examiner/nextQuestion?examiner_id=${examinerId}`)
+                    fetch(apiUrl("/examiner/grades")),
+                    fetch(`${apiUrl("/examiner/nextQuestion")}?examiner_id=${examinerId}`)
                 ]);
 
                 const gradesBody = gradesRes.status === "fulfilled"
@@ -105,7 +105,7 @@ const Questions = ({ username, examinerId, round }: QuestionsProps) => {
         setStatus("loading");
         setError("");
         try {
-            const response = await fetch(`${API_BASE_URL}/examiner/submitGrade`, {
+            const response = await fetch(apiUrl("/examiner/submitGrade"), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -122,7 +122,7 @@ const Questions = ({ username, examinerId, round }: QuestionsProps) => {
                 throw new Error(body.error ?? body.message ?? "Failed to submit grade");
             }
 
-            const nextRes = await fetch(`${API_BASE_URL}/examiner/nextQuestion?examiner_id=${examinerId}`);
+            const nextRes = await fetch(`${apiUrl("/examiner/nextQuestion")}?examiner_id=${examinerId}`);
             const nextBody = await nextRes.json().catch(() => ({}));
             if (!nextRes.ok) {
                 throw new Error(nextBody.error ?? nextBody.message ?? "Failed to load next question");
