@@ -12,6 +12,6 @@
     "declaration": false
   },
   "include": [
-    "src"
+    "src/**/*.ts"
   ]
 }

@@ -1,8 +1,8 @@
 import express, { Router } from "express";
 import type { Request, Response } from "express";
-import { RepresentativeAnswerModel } from "../../db/representative_answer.js";
-import { ExaminerEvaluationModel } from "../../db/evaluation.js";
-import { Examiner } from "../../db/examiner.js";
+import { RepresentativeAnswerModel } from "../db/representative_answer.js";
+import { ExaminerEvaluationModel } from "../db/evaluation.js";
+import { Examiner } from "../db/examiner.js";
 
 const router: Router = express.Router();
 const ALLOWED_GRADES = ["Correct", "Partially Correct", "Incorrect", "Hallucination"];
